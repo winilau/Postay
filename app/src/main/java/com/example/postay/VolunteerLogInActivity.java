@@ -10,6 +10,7 @@ public class VolunteerLogInActivity extends AppCompatActivity {
     private EditText mEmail, mPassword;
     private Button mLogin,mRegister;
 
+    private fire
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
