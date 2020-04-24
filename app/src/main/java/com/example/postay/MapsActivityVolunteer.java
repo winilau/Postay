@@ -72,6 +72,8 @@ public class MapsActivityVolunteer extends FragmentActivity implements OnMapRead
         LatLng latlng = new LatLng(location.getLatitude(),location.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+
+
     }
 
     @Override
