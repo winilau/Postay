@@ -36,7 +36,7 @@ public class UserLoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null){
-                    Intent intent = new Intent(UserLoginActivity.this, MapsActivityVolunteer.class);
+                    Intent intent = new Intent(UserLoginActivity.this, MapsActivityUser.class);
                     startActivity(intent);
                     finish();
                     return;
