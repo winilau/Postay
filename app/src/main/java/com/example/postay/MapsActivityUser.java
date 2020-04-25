@@ -2,6 +2,7 @@ package com.example.postay;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import android.content.Intent;
@@ -14,7 +15,6 @@ import android.widget.Button;
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -24,26 +24,25 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-
-public class MapsActivityVolunteer extends FragmentActivity implements OnMapReadyCallback,
+public class MapsActivityUser extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         LocationListener, com.google.android.gms.location.LocationListener{
 
     private GoogleMap mMap;
     GoogleApiClient mApiClient;
+    private Button mRequestButton, mlogOut;
     Location mLocation;
     LocationRequest mRequest;
-    private Button mlogOut;
+    private LatLng dropOff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps_volunteer);
+        setContentView(R.layout.activity_maps_user);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -54,10 +53,26 @@ public class MapsActivityVolunteer extends FragmentActivity implements OnMapRead
             @Override
             public void onClick (View v){
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(MapsActivityVolunteer.this, main.class);
+                Intent intent = new Intent(MapsActivityUser.this, main.class);
                 startActivity(intent);
                 finish();
                 return;
+            }
+        });
+
+        mRequestButton = (Button) findViewById(R.id.request);
+        mRequestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("userRequest");
+                GeoFire geo = new GeoFire(ref);
+                geo.setLocation(userId,new GeoLocation(mLocation.getLatitude(),mLocation.getLongitude()));
+
+                dropOff = new LatLng(mLocation.getLatitude(),mLocation.getLongitude());
+                mMap.addMarker(new MarkerOptions().position(dropOff).title("Drop Off Here"));
+
+                mRequestButton.setText("Finding a Volunteer!");
             }
         });
     }
@@ -94,12 +109,6 @@ public class MapsActivityVolunteer extends FragmentActivity implements OnMapRead
         LatLng latlng = new LatLng(location.getLatitude(),location.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
-
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("volunteersAvailable");
-
-        GeoFire geo = new GeoFire(ref);
-        geo.setLocation(userId, new GeoLocation(mLocation.getLatitude(), mLocation.getLongitude()));
     }
 
     @Override
@@ -135,13 +144,6 @@ public class MapsActivityVolunteer extends FragmentActivity implements OnMapRead
     @Override
     protected void onStop() {
         super.onStop();
-
-        LocationServices.FusedLocationApi.removeLocationUpdates(mApiClient,this);
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("volunteersAvailable");
-
-        GeoFire geo = new GeoFire(ref);
-        geo.removeLocation(userId);
     }
 
     @Override
