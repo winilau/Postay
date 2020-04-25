@@ -30,12 +30,14 @@ public class UserShopping extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_shopping);
 
+        spinner = findViewById(R.id.spinner);
+        String[] num = new String[]{"1","2","3","4","5","6","7","8","9","10"};
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,num);
+        spinner.setAdapter(adapter1);
+        listView = findViewById(R.id.listView);
 
         MyAdapter adapter = new MyAdapter(this,mProduct,mPrice);
         listView.setAdapter(adapter);
-
-
-
     }
 
 

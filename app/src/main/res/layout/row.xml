@@ -5,6 +5,7 @@
     android:orientation="horizontal"
     android:padding="16dp">
 
+
     <TextView
         android:id="@+id/product"
         android:layout_width="200dp"
