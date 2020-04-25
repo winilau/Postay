@@ -65,7 +65,8 @@ public class MapsActivityUser extends FragmentActivity implements OnMapReadyCall
             @Override
             public void onClick(View v) {
                 String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("userRequest");
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("customerRequest");
+
                 GeoFire geo = new GeoFire(ref);
                 geo.setLocation(userId,new GeoLocation(mLocation.getLatitude(),mLocation.getLongitude()));
 

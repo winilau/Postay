@@ -61,7 +61,8 @@ public class UserLoginActivity extends AppCompatActivity {
                             Toast.makeText(UserLoginActivity.this, "sign up error", Toast.LENGTH_SHORT).show();
                         }else{
                             String user_id = mAuth.getCurrentUser().getUid();
-                            DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("users").child("UserUserLoginActivity").child(user_id);
+                            DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("users")
+                                    .child("User").child(user_id);
                             current_user_db.setValue(true);
                         }
                     }
