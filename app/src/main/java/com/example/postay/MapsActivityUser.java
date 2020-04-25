@@ -25,11 +25,17 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.List;
 
 public class MapsActivityUser extends FragmentActivity implements OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
@@ -98,7 +104,14 @@ public class MapsActivityUser extends FragmentActivity implements OnMapReadyCall
                 if(!volunteerFound) {
                     volunteerFound = true;
                     volunteerFoundID = key;
-                    mRequestButton.setText("Volunteer Found!");
+                    mRequestButton.setText("Looking for Volunteer Location...");
+                    DatabaseReference volunteerRef = FirebaseDatabase.getInstance().getReference()
+                            .child("users").child("Volunteer").child(volunteerFoundID);
+                    String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                    HashMap map = new HashMap();
+                    map.put("UserShoppingId", userID);
+                    volunteerRef.updateChildren(map);
+                    getVolunteerLocation();
                 }
             }
 
@@ -123,6 +136,39 @@ public class MapsActivityUser extends FragmentActivity implements OnMapReadyCall
             @Override
             public void onGeoQueryError(DatabaseError error) {
 
+            }
+        });
+    }
+
+    Marker mVolunteerMarker;
+    private void getVolunteerLocation(){
+        DatabaseReference volunteerLocRef = FirebaseDatabase.getInstance().getReference()
+                .child("volunteerWorking").child(volunteerFoundID).child("l");
+        volunteerLocRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    List<Object> map = (List<Object>) dataSnapshot.getValue();
+                    double locationLat = 0;
+                    double locationLon = 0;
+                    mRequestButton.setText("Volunteer Found!");
+                    if(map.get(0) != null){
+                        locationLat = Double.parseDouble(map.get(0).toString()) ;
+                    }
+                    if(map.get(1) != null){
+                        locationLon = Double.parseDouble(map.get(1).toString()) ;
+                    }
+                    LatLng volunteerLatLng = new LatLng(locationLat,locationLon);
+                    if(mVolunteerMarker != null){
+                        mVolunteerMarker.remove();
+                    }
+                    mVolunteerMarker = mMap.addMarker(new MarkerOptions()
+                            .position(volunteerLatLng).title("Your volunteer!"));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
     }
