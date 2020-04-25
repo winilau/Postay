@@ -18,6 +18,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.text.InputFilter;
+import android.text.Spanned;
 
 public class UserShopping extends AppCompatActivity {
 
@@ -41,6 +43,37 @@ public class UserShopping extends AppCompatActivity {
         listView.addFooterView(submit);
 
 
+
+
+    }
+
+    public class InputFilterMinMax implements InputFilter {
+
+        private int min, max;
+
+        public InputFilterMinMax(int min, int max) {
+            this.min = min;
+            this.max = max;
+        }
+
+        public InputFilterMinMax(String min, String max) {
+            this.min = Integer.parseInt(min);
+            this.max = Integer.parseInt(max);
+        }
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            try {
+                int input = Integer.parseInt(dest.toString() + source.toString());
+                if (isInRange(min, max, input))
+                    return null;
+            } catch (NumberFormatException nfe) { }
+            return "";
+        }
+
+        private boolean isInRange(int a, int b, int c) {
+            return b > a ? c >= a && c <= b : c >= b && c <= a;
+        }
     }
 
 
@@ -62,8 +95,12 @@ public class UserShopping extends AppCompatActivity {
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
             LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View row = layoutInflater.inflate(R.layout.row,parent,false);
+            EditText myAmount = row.findViewById(R.id.amount);
             TextView myProduct = row.findViewById(R.id.product);
             TextView myPrice = row.findViewById(R.id.price);
+
+            myAmount.setFilters(new InputFilter[]{ new InputFilterMinMax("1", "12")});
+
 
             myProduct.setText(rProduct[position]);
             myPrice.setText(rPrice[position]);
