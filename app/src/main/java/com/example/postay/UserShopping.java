@@ -21,6 +21,11 @@ import android.widget.TextView;
 import android.text.InputFilter;
 import android.text.Spanned;
 
+import com.google.android.gms.common.server.converter.StringToIntConverter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class UserShopping extends AppCompatActivity {
 
     private ListView listView;
@@ -42,9 +47,32 @@ public class UserShopping extends AppCompatActivity {
 
         listView.addFooterView(submit);
 
+        String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final DatabaseReference current_user_db = FirebaseDatabase.getInstance().getReference().child("users")
+                .child("User").child(user_id);
 
-
-
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference shopping = current_user_db.child("Shopping List");
+                DatabaseReference total_price = current_user_db.child("Total Price");
+                double count = 0.0;
+                for(int i = 0;i < mProduct.length ;i++){
+                    View view =listView.getChildAt(i);
+                    String myAmount = view.findViewById(R.id.amount).toString();
+                    if (myAmount != null){
+                        String item = view.findViewById(R.id.product).toString();
+                        String price = view.findViewById(R.id.price).toString();
+                        String concat = item + ", " + myAmount + ", " + price;
+                        shopping.child(concat);
+                        double price1 = Double.parseDouble(price.substring(1));
+                        int amount = Integer.parseInt(myAmount);
+                        count += price1 * amount;
+                    }
+                }
+                total_price.child(Double.toString(count));
+            }
+        });
     }
 
     public class InputFilterMinMax implements InputFilter {
