@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MapsActivityUser"></activity>
+        <activity android:name=".UserShopping"></activity>
+        <activity android:name=".MapsActivityUser" />
         <activity android:name=".UserLoginActivity" />
         <activity android:name=".VolunteerLogInActivity" />
         <activity android:name=".main">
@@ -37,7 +38,7 @@
 
         <activity
             android:name=".MapsActivityVolunteer"
-            android:label="@string/title_activity_maps_volunteer"></activity>
+            android:label="@string/title_activity_maps_volunteer" />
     </application>
 
 </manifest>
