@@ -39,6 +39,7 @@ public class UserLoginActivity extends AppCompatActivity {
                     Intent intent = new Intent(UserLoginActivity.this, MapsActivityUser.class);
                     startActivity(intent);
                     finish();
+                    return;
                 }
             }
         };
