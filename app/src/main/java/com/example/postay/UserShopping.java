@@ -76,7 +76,10 @@ public class UserShopping extends AppCompatActivity {
                 }
                 countStr = Double.toString(count);
                 shopping.setValue(map);
-                total_price.child(countStr);
+                total_price.setValue(countStr);
+                Intent intent = new Intent(UserShopping.this, MapsActivityUser.class);
+                startActivity(intent);
+                finish();
             }
         });
     }

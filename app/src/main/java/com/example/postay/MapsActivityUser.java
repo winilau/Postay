@@ -85,6 +85,7 @@ public class MapsActivityUser extends FragmentActivity implements OnMapReadyCall
                 mRequestButton.setText("Finding a Volunteer...");
 
                 getClosestVolunteer();
+
             }
         });
 
