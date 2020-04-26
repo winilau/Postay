@@ -60,7 +60,7 @@ public class UserShopping extends AppCompatActivity {
                 for(int i = 0;i < mProduct.length ;i++){
                     View view =listView.getChildAt(i);
                     String myAmount = view.findViewById(R.id.amount).toString();
-                    if (myAmount != null){
+                    if (myAmount != ""){
                         String item = view.findViewById(R.id.product).toString();
                         String price = view.findViewById(R.id.price).toString();
                         String concat = item + ", " + myAmount + ", " + price;
