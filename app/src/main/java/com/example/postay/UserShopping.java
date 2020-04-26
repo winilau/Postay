@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Layout;
 import android.view.LayoutInflater;
@@ -25,6 +26,8 @@ import com.google.android.gms.common.server.converter.StringToIntConverter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class UserShopping extends AppCompatActivity {
 
@@ -54,23 +57,26 @@ public class UserShopping extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference shopping = current_user_db.child("Shopping List");
-                DatabaseReference total_price = current_user_db.child("Total Price");
+                DatabaseReference shopping = current_user_db.child("ShoppingList");
+                DatabaseReference total_price = current_user_db.child("TotalPrice");
+                HashMap<String,String> map  = new HashMap<>();
+                String countStr;
                 double count = 0.0;
-                for(int i = 0;i < mProduct.length ;i++){
-                    View view =listView.getChildAt(i);
+                for (int i = 0; i<mProduct.length; i++){
+                    View view = listView.getChildAt(i);
                     String myAmount = view.findViewById(R.id.amount).toString();
                     if (!myAmount.matches("")){
                         String item = view.findViewById(R.id.product).toString();
                         String price = view.findViewById(R.id.price).toString();
-                        String concat = item + ", " + myAmount + ", " + price;
-                        shopping.child(concat);
+                        map.put(item,myAmount);
                         double price1 = Double.parseDouble(price.substring(1));
                         int amount = Integer.parseInt(myAmount);
                         count += price1 * amount;
                     }
                 }
-                total_price.child(Double.toString(count));
+                countStr = Double.toString(count);
+                shopping.setValue(map);
+                total_price.child(countStr);
             }
         });
     }

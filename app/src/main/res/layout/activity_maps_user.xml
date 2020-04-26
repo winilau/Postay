@@ -13,6 +13,13 @@
         android:text="Logout"/>
 
     <Button
+        android:layout_width="410dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="645dp"
+        android:id ="@+id/shop"
+        android:text="Go Shopping!"/>
+
+    <Button
         android:id="@+id/request"
         android:layout_width="410dp"
         android:layout_height="wrap_content"

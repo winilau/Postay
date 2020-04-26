@@ -81,6 +81,7 @@ public class MapsActivityVolunteer extends FragmentActivity implements OnMapRead
                 if (dataSnapshot.exists()){
                         mUserId = dataSnapshot.getValue().toString();
                         getAssignedUserDropOffLocation();
+                        getAssignedUserShoppingList();
                 }
             }
 
@@ -110,6 +111,23 @@ public class MapsActivityVolunteer extends FragmentActivity implements OnMapRead
                     mMap.addMarker(new MarkerOptions()
                             .position(userLatLng).title("Drop Off Here"));
 
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+    }
+
+    private void getAssignedUserShoppingList(){
+        DatabaseReference assignedUserList = FirebaseDatabase.getInstance().getReference()
+                .child("users").child("User").child(mUserId).child("Shopping List");
+        assignedUserList.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    List<Object> map = (List<Object>) dataSnapshot.getValue();
                 }
             }
 

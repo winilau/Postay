@@ -43,7 +43,7 @@ public class MapsActivityUser extends FragmentActivity implements OnMapReadyCall
 
     private GoogleMap mMap;
     GoogleApiClient mApiClient;
-    private Button mRequestButton, mlogOut;
+    private Button mRequestButton, mlogOut, mShopping;
     Location mLocation;
     LocationRequest mRequest;
     private LatLng dropOff;
@@ -87,6 +87,18 @@ public class MapsActivityUser extends FragmentActivity implements OnMapReadyCall
                 getClosestVolunteer();
             }
         });
+
+        mShopping = (Button) findViewById(R.id.shop);
+        mShopping.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick (View v){
+                Intent intent = new Intent(MapsActivityUser.this, UserShopping.class);
+                startActivity(intent);
+                finish();
+                return;
+            }
+        });
+
     }
 
     private int radius = 1;
