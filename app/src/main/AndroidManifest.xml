@@ -13,17 +13,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".shoppingContent"></activity>
-        <activity android:name=".UserShopping"></activity>
-        <activity android:name=".MapsActivityUser" />
-        <activity android:name=".UserLoginActivity" />
-        <activity android:name=".VolunteerLogInActivity" />
-        <activity android:name=".main">
+        <activity android:name=".shoppingContent"/>
+        <activity android:name=".UserShopping">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".MapsActivityUser" />
+        <activity android:name=".UserLoginActivity" />
+        <activity android:name=".VolunteerLogInActivity" />
+        <activity android:name=".main">
+
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

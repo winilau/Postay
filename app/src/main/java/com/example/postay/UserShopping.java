@@ -59,9 +59,8 @@ public class UserShopping extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DatabaseReference shopping = current_user_db.child("ShoppingList");
-                DatabaseReference total_price = current_user_db.child("Prices");
+                DatabaseReference total_price = current_user_db.child("Total Price");
                 HashMap<String,String> map  = new HashMap<>();
-                HashMap<String,String> prices = new HashMap<>();
                 String countStr;
                 double count = 0.0;
                 for (int i = 0; i < 7; i++){
@@ -69,7 +68,6 @@ public class UserShopping extends AppCompatActivity {
                     if (!myAmount.matches("")){
                         String item = mProduct[i];
                         String price = mPrice[i];
-                        prices.put(item,price);
                         map.put(item,myAmount);
                         double price1 = Double.parseDouble(price.substring(1));
                         int amount = Integer.parseInt(myAmount);
@@ -77,9 +75,8 @@ public class UserShopping extends AppCompatActivity {
                     }
                 }
                 countStr = Double.toString(count);
-                prices.put("Total",countStr);
                 shopping.setValue(map);
-                total_price.setValue(prices);
+                total_price.setValue(countStr);
                 Intent intent = new Intent(UserShopping.this, MapsActivityUser.class);
                 startActivity(intent);
                 finish();

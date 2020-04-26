@@ -15,21 +15,11 @@
         android:textSize="20sp"/>
 
     <TextView
-        android:id="@+id/price"
+        android:id="@+id/amount"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:text="price"
+        android:text="amount"
         android:textSize="20dp" />
-
-    <EditText
-        android:hint="amount"
-        android:maxLines="1"
-        android:inputType="number"
-        android:layout_marginHorizontal="10dp"
-        android:id="@+id/amount"
-        android:layout_width="wrap_content"
-        android:imeOptions="actionDone"
-        android:layout_height="wrap_content"/>
 
 
 </androidx.appcompat.widget.LinearLayoutCompat>
